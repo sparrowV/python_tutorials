@@ -1,0 +1,19 @@
+{
+    "countries": [
+        {
+            "capital": "washingot",
+            "name": "usa",
+            "west": true
+        },
+        {
+            "capital": "ottawa",
+            "name": "canada",
+            "west": true
+        },
+        {
+            "capital": "Tokyo",
+            "name": "japan",
+            "west": false
+        }
+    ]
+}
