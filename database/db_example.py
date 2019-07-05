@@ -5,7 +5,7 @@ cursor = connection.cursor()
 
 posts_table = '''
     CREATE TABLE Posts(
-        id integer PRIMARY KEY,
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
         title text,
         body text,
         author text
