@@ -98,6 +98,8 @@ def getCountForFeature(f,feature,sorted_values):
                 if (elem != "" and j != 0):
                     temp_result.append(properties[j])
         i+=1
+        if(feature == "Other"):
+            print("tmp",temp_result)
         if(feature in temp_result and  validate(feature,temp_result,sorted_values) ):
             result+=1
     return result
@@ -107,9 +109,11 @@ def write_in_file(output,sorted_values,num_count_for_most,f,total_rows,sorted_li
     output.write(sorted_values[0]+"("+str(sorted_list[0][1])+")"+": +"+str(num_count_for_most)+" = "+str(num_count_for_most)+"/"+str(per)+"%")
     output.write("\n")
     previous_count = num_count_for_most
-    str_for_other = ""
+    other_default_count = None
+    other_count = None
     i = 1
     for feature in sorted_values[1:]:
+        print(feature)
         count = getCountForFeature(f,feature,sorted_values)
         f.seek(0)
         percent = int((count + previous_count)/total_rows * 100)
@@ -118,10 +122,16 @@ def write_in_file(output,sorted_values,num_count_for_most,f,total_rows,sorted_li
             output.write("\n")
             previous_count += count
         else:
-            str_for_other = feature+"("+str(sorted_list[i][1])+") "+": +"+str(count)+" = "+str(count+previous_count)+"/"+str(percent)+"%"
+            # str_for_other = feature+"("+str(sorted_list[i][1])+") "+": +"+str(count)+" = "+str(count)+"/"+str(percent)+"%"
+            other_default_count = sorted_list[i][1]
+            other_count = count
+            print("for other ",count)
 
         i+=1
-    # output.write(str_for_other+"\n")
+    if(other_count != None):
+        other_per = int((other_count + previous_count) / total_rows*100)
+        output.write("Other( "+str(other_default_count)+") "+" : +"+str(other_count)+" = "+str(previous_count+other_count)+"/"+str(other_per)+ "%"+  "\n")
+        previous_count+=other_count
     # other_total = total_rows -
     # output.write("Other"+"("+)
     output.write("[Remaining]"+ " : "+str(total_rows - previous_count)+"\n")
@@ -131,7 +141,7 @@ def write_in_file(output,sorted_values,num_count_for_most,f,total_rows,sorted_li
 
 
 
-with open('sample_data.csv', newline='') as f:
+with open('data.csv', newline='') as f:
     res ,total_rows= parse(f)
     print(res)
     reader = csv.reader(f)
